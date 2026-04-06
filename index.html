@@ -2082,13 +2082,13 @@ function shareWorkout(workoutId){
       <div style="text-align:center"><div style="font-family:'Bebas Neue';font-size:28px;color:var(--accent)">${((w.totalVolume||0)/1000).toFixed(1)}</div><div style="font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase">Tons</div></div>
     </div>
     <div style="font-size:11px;color:var(--muted);line-height:1.8">${w.exercises.map(e=>e.name).join(' · ')}</div>
-    <div style="margin-top:14px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px">ironfitlog.pages.dev — 100% Free 💪</div>
+    <div style="margin-top:14px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px">ifl.iron-fit-log.workers.dev — 100% Free 💪</div>
   </div>`;
   showModal('modal-share');
 }
 function copyShareLink(){
-  const text=`Just crushed a workout on IronFitLog 💪\n\nThe FREE gym app — no subscriptions, no paywalls.\nGym, calisthenics, MMA, pilates, yoga & more.\n\n👉 ironfitlog.pages.dev`;
-  if(navigator.share){navigator.share({title:'IronFitLog Workout',text,url:'https://ironfitlog.pages.dev'}).catch(()=>{});}
+  const text=`Just crushed a workout on IronFitLog 💪\n\nThe FREE gym app — no subscriptions, no paywalls.\nGym, calisthenics, MMA, pilates, yoga & more.\n\n👉 ifl.iron-fit-log.workers.dev`;
+  if(navigator.share){navigator.share({title:'IronFitLog Workout',text,url:'https://ifl.iron-fit-log.workers.dev'}).catch(()=>{});}
   else{navigator.clipboard.writeText(text).then(()=>showToast('Copied!')).catch(()=>showToast('Copy failed','error'));}
 }
 
