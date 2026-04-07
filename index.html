@@ -212,9 +212,10 @@ nav button.active{color:var(--accent);}
 
 /* CALENDAR HEATMAP */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:8px;}
-.cal-day{width:100%;aspect-ratio:1;border-radius:3px;background:var(--border);}
-.cal-day.worked{background:var(--accent);}
-.cal-day.today{outline:2px solid var(--accent2);outline-offset:1px;}
+.cal-day{width:100%;aspect-ratio:1;border-radius:5px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--muted);}
+.cal-day.worked{background:var(--accent);color:#fff;}
+.cal-day.today{outline:2px solid var(--accent2);outline-offset:1px;color:var(--accent2);}
+.cal-day.worked.today{color:#fff;}
 
 /* ADVANCED STATS */
 .adv-stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
@@ -831,31 +832,31 @@ const MUSCLE_MAP={
 };
 
 const BUILTIN_DB=[
-  {id:'bench-press',name:'Bench Press',cat:'gym',muscle:'Chest',icon:'🏋️',img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=120&h=120&fit=crop&crop=center',desc:'Lie flat on bench. Lower bar to chest, press up explosively. Keep feet flat.',sets:3},
-  {id:'incline-bench',name:'Incline Bench Press',cat:'gym',muscle:'Chest',icon:'📐',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=120&h=120&fit=crop&crop=center',desc:'Set bench 30–45°. Press barbell from upper chest to lockout.',sets:3},
-  {id:'deadlift',name:'Deadlift',cat:'gym',muscle:'Back',icon:'🏗️',img:'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=120&h=120&fit=crop&crop=center',desc:'Bar over mid-foot. Hinge hips, grip bar, drive through heels.',sets:3},
-  {id:'squat',name:'Back Squat',cat:'gym',muscle:'Legs',icon:'🦵',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=120&h=120&fit=crop&crop=center',desc:'Bar on traps. Feet shoulder-width. Squat below parallel.',sets:4},
-  {id:'ohp',name:'Overhead Press',cat:'gym',muscle:'Shoulders',icon:'⬆️',img:'https://images.unsplash.com/photo-1590771998996-8589ec9b5ac6?w=120&h=120&fit=crop&crop=center',desc:'Press barbell from shoulders to full lockout overhead.',sets:3},
-  {id:'lat-pulldown',name:'Lat Pulldown',cat:'gym',muscle:'Back',icon:'⬇️',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=120&h=120&fit=crop&crop=center',desc:'Grip bar wide. Pull to upper chest. Squeeze lats at the bottom.',sets:3},
-  {id:'bent-row',name:'Barbell Row',cat:'gym',muscle:'Back',icon:'🔄',img:'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=120&h=120&fit=crop&crop=center',desc:'Hinge forward 45°. Pull bar to lower chest. Squeeze shoulder blades.',sets:3},
-  {id:'leg-press',name:'Leg Press',cat:'gym',muscle:'Legs',icon:'🚗',img:'https://images.unsplash.com/photo-1606889464198-fcb18894cf0f?w=120&h=120&fit=crop&crop=center',desc:'Feet shoulder-width on platform. Lower until 90°. Press.',sets:4},
-  {id:'bicep-curl',name:'Bicep Curl',cat:'gym',muscle:'Arms',icon:'💪',img:'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=120&h=120&fit=crop&crop=center',desc:'Supinate grip. Curl dumbbells to shoulders. Control the negative.',sets:3},
-  {id:'tricep-pushdown',name:'Tricep Pushdown',cat:'gym',muscle:'Arms',icon:'⬇️',img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=120&h=120&fit=crop&crop=center',desc:'Push cable handle down. Keep elbows pinned to sides.',sets:3},
-  {id:'lateral-raise',name:'Lateral Raise',cat:'gym',muscle:'Shoulders',icon:'✈️',img:'https://images.unsplash.com/photo-1590771998996-8589ec9b5ac6?w=120&h=120&fit=crop&crop=center',desc:'Raise dumbbells to shoulder height. Lead with elbows.',sets:3},
-  {id:'rdl',name:'Romanian Deadlift',cat:'gym',muscle:'Legs',icon:'🏋️',img:'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=120&h=120&fit=crop&crop=center',desc:'Hinge at hips, lower bar down thighs. Feel hamstring stretch.',sets:3},
-  {id:'face-pull',name:'Face Pull',cat:'gym',muscle:'Shoulders',icon:'😤',img:'https://images.unsplash.com/photo-1590771998996-8589ec9b5ac6?w=120&h=120&fit=crop&crop=center',desc:'Pull rope to face level. Elbows high, externally rotate.',sets:3},
-  {id:'hammer-curl',name:'Hammer Curl',cat:'gym',muscle:'Arms',icon:'🔨',img:'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=120&h=120&fit=crop&crop=center',desc:'Neutral grip curl. Works brachialis for arm thickness.',sets:3},
-  {id:'calf-raise',name:'Calf Raise',cat:'gym',muscle:'Legs',icon:'👟',img:'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=120&h=120&fit=crop&crop=center',desc:'Rise onto toes fully. Pause at top. Lower slowly.',sets:4},
-  {id:'skull-crusher',name:'Skull Crushers',cat:'gym',muscle:'Arms',icon:'💀',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=120&h=120&fit=crop&crop=center',desc:'Lie flat. Lower EZ bar to forehead. Extend to lockout.',sets:3},
-  {id:'cable-fly',name:'Cable Fly',cat:'gym',muscle:'Chest',icon:'🔗',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=120&h=120&fit=crop&crop=center',desc:'Arms wide at cable machine. Arc hands together at chest height.',sets:3},
-  {id:'leg-curl',name:'Leg Curl',cat:'gym',muscle:'Legs',icon:'🌀',img:'https://images.unsplash.com/photo-1606889464198-fcb18894cf0f?w=120&h=120&fit=crop&crop=center',desc:'Lying or seated. Curl heels toward glutes. Control the descent.',sets:3},
-  {id:'pull-up',name:'Pull Up',cat:'calisthenics',muscle:'Back',icon:'🪝',img:'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=120&h=120&fit=crop&crop=center',desc:'Dead hang. Pull chest to bar. Full range of motion.',sets:3},
+  {id:'bench-press',name:'Bench Press',cat:'gym',muscle:'Chest',icon:'🏋️',img:'https://images.unsplash.com/photo-1534368420009-621bfab424a8?w=120&h=120&fit=crop&crop=center',desc:'Lie flat on bench. Lower bar to chest, press up explosively. Keep feet flat.',sets:3},
+  {id:'incline-bench',name:'Incline Bench Press',cat:'gym',muscle:'Chest',icon:'📐',img:'https://images.unsplash.com/photo-1584952811565-c4c4031c5109?w=120&h=120&fit=crop&crop=center',desc:'Set bench 30–45°. Press barbell from upper chest to lockout.',sets:3},
+  {id:'deadlift',name:'Deadlift',cat:'gym',muscle:'Back',icon:'🏗️',img:'https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=120&h=120&fit=crop&crop=center',desc:'Bar over mid-foot. Hinge hips, grip bar, drive through heels.',sets:3},
+  {id:'squat',name:'Back Squat',cat:'gym',muscle:'Legs',icon:'🦵',img:'https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=120&h=120&fit=crop&crop=center',desc:'Bar on traps. Feet shoulder-width. Squat below parallel.',sets:4},
+  {id:'ohp',name:'Overhead Press',cat:'gym',muscle:'Shoulders',icon:'⬆️',img:'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=120&h=120&fit=crop&crop=center',desc:'Press barbell from shoulders to full lockout overhead.',sets:3},
+  {id:'lat-pulldown',name:'Lat Pulldown',cat:'gym',muscle:'Back',icon:'⬇️',img:'https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=120&h=120&fit=crop&crop=center',desc:'Grip bar wide. Pull to upper chest. Squeeze lats at the bottom.',sets:3},
+  {id:'bent-row',name:'Barbell Row',cat:'gym',muscle:'Back',icon:'🔄',img:'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=120&h=120&fit=crop&crop=center',desc:'Hinge forward 45°. Pull bar to lower chest. Squeeze shoulder blades.',sets:3},
+  {id:'leg-press',name:'Leg Press',cat:'gym',muscle:'Legs',icon:'🚗',img:'https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=120&h=120&fit=crop&crop=center',desc:'Feet shoulder-width on platform. Lower until 90°. Press.',sets:4},
+  {id:'bicep-curl',name:'Bicep Curl',cat:'gym',muscle:'Arms',icon:'💪',img:'https://images.unsplash.com/photo-1581009137042-c552e485697a?w=120&h=120&fit=crop&crop=center',desc:'Supinate grip. Curl dumbbells to shoulders. Control the negative.',sets:3},
+  {id:'tricep-pushdown',name:'Tricep Pushdown',cat:'gym',muscle:'Arms',icon:'⬇️',img:'https://images.unsplash.com/photo-1530822847156-5df684ec5933?w=120&h=120&fit=crop&crop=center',desc:'Push cable handle down. Keep elbows pinned to sides.',sets:3},
+  {id:'lateral-raise',name:'Lateral Raise',cat:'gym',muscle:'Shoulders',icon:'✈️',img:'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=120&h=120&fit=crop&crop=center',desc:'Raise dumbbells to shoulder height. Lead with elbows.',sets:3},
+  {id:'rdl',name:'Romanian Deadlift',cat:'gym',muscle:'Legs',icon:'🏋️',img:'https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=120&h=120&fit=crop&crop=center',desc:'Hinge at hips, lower bar down thighs. Feel hamstring stretch.',sets:3},
+  {id:'face-pull',name:'Face Pull',cat:'gym',muscle:'Shoulders',icon:'😤',img:'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=120&h=120&fit=crop&crop=center',desc:'Pull rope to face level. Elbows high, externally rotate.',sets:3},
+  {id:'hammer-curl',name:'Hammer Curl',cat:'gym',muscle:'Arms',icon:'🔨',img:'https://images.unsplash.com/photo-1581009137042-c552e485697a?w=120&h=120&fit=crop&crop=center',desc:'Neutral grip curl. Works brachialis for arm thickness.',sets:3},
+  {id:'calf-raise',name:'Calf Raise',cat:'gym',muscle:'Legs',icon:'👟',img:'https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=120&h=120&fit=crop&crop=center',desc:'Rise onto toes fully. Pause at top. Lower slowly.',sets:4},
+  {id:'skull-crusher',name:'Skull Crushers',cat:'gym',muscle:'Arms',icon:'💀',img:'https://images.unsplash.com/photo-1530822847156-5df684ec5933?w=120&h=120&fit=crop&crop=center',desc:'Lie flat. Lower EZ bar to forehead. Extend to lockout.',sets:3},
+  {id:'cable-fly',name:'Cable Fly',cat:'gym',muscle:'Chest',icon:'🔗',img:'https://images.unsplash.com/photo-1534368420009-621bfab424a8?w=120&h=120&fit=crop&crop=center',desc:'Arms wide at cable machine. Arc hands together at chest height.',sets:3},
+  {id:'leg-curl',name:'Leg Curl',cat:'gym',muscle:'Legs',icon:'🌀',img:'https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=120&h=120&fit=crop&crop=center',desc:'Lying or seated. Curl heels toward glutes. Control the descent.',sets:3},
+  {id:'pull-up',name:'Pull Up',cat:'calisthenics',muscle:'Back',icon:'🪝',img:'https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=120&h=120&fit=crop&crop=center',desc:'Dead hang. Pull chest to bar. Full range of motion.',sets:3},
   {id:'push-up',name:'Push Up',cat:'calisthenics',muscle:'Chest',icon:'💪',img:'https://images.unsplash.com/photo-1598971639058-fab3c3109a3c?w=120&h=120&fit=crop&crop=center',desc:'Hands shoulder-width. Lower chest to floor, press up.',sets:3},
-  {id:'dips',name:'Dips',cat:'calisthenics',muscle:'Arms',icon:'🤸',img:'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=120&h=120&fit=crop&crop=center',desc:'Lower between parallel bars until arms parallel to floor.',sets:3},
-  {id:'muscle-up',name:'Muscle Up',cat:'calisthenics',muscle:'Back',icon:'⬆️',img:'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=120&h=120&fit=crop&crop=center',desc:'Explosive pull-up transitioning into a dip at the top.',sets:3},
-  {id:'pistol-squat',name:'Pistol Squat',cat:'calisthenics',muscle:'Legs',icon:'🦵',img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=120&h=120&fit=crop&crop=center',desc:'Single-leg squat to full depth. Elite balance and strength.',sets:3},
-  {id:'l-sit',name:'L-Sit Hold',cat:'calisthenics',muscle:'Core',icon:'🪑',img:'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=120&h=120&fit=crop&crop=center',desc:'Support on parallel bars. Lift legs parallel. Hold.',sets:3},
-  {id:'handstand',name:'Handstand Hold',cat:'calisthenics',muscle:'Shoulders',icon:'🙃',img:'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=120&h=120&fit=crop&crop=center',desc:'Kick up against wall. Hollow body. Stack joints over wrists.',sets:3},
+  {id:'dips',name:'Dips',cat:'calisthenics',muscle:'Arms',icon:'🤸',img:'https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=120&h=120&fit=crop&crop=center',desc:'Lower between parallel bars until arms parallel to floor.',sets:3},
+  {id:'muscle-up',name:'Muscle Up',cat:'calisthenics',muscle:'Back',icon:'⬆️',img:'https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=120&h=120&fit=crop&crop=center',desc:'Explosive pull-up transitioning into a dip at the top.',sets:3},
+  {id:'pistol-squat',name:'Pistol Squat',cat:'calisthenics',muscle:'Legs',icon:'🦵',img:'https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=120&h=120&fit=crop&crop=center',desc:'Single-leg squat to full depth. Elite balance and strength.',sets:3},
+  {id:'l-sit',name:'L-Sit Hold',cat:'calisthenics',muscle:'Core',icon:'🪑',img:'https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=120&h=120&fit=crop&crop=center',desc:'Support on parallel bars. Lift legs parallel. Hold.',sets:3},
+  {id:'handstand',name:'Handstand Hold',cat:'calisthenics',muscle:'Shoulders',icon:'🙃',img:'https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=120&h=120&fit=crop&crop=center',desc:'Kick up against wall. Hollow body. Stack joints over wrists.',sets:3},
   {id:'pilates-hundred',name:'The Hundred',cat:'pilates',muscle:'Core',icon:'💯',img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=120&h=120&fit=crop&crop=center',desc:'Lie on back. Raise legs 45°, pump arms 100 times.',sets:3},
   {id:'pilates-teaser',name:'Teaser',cat:'pilates',muscle:'Core',icon:'🎯',img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=120&h=120&fit=crop&crop=center',desc:'Balance on tailbone. Form V shape with legs and torso.',sets:3},
   {id:'pilates-bridge',name:'Shoulder Bridge',cat:'pilates',muscle:'Legs',icon:'🌉',img:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=120&h=120&fit=crop&crop=center',desc:'Lie on back, bridge hips up. Extend one leg at a time.',sets:3},
@@ -1054,7 +1055,7 @@ function renderAttendanceCalendar(){
   for(let d=1;d<=daysInMonth;d++){
     const isToday=d===now.getDate();
     const worked=trainedDates.has(d);
-    html+=`<div class="cal-day${worked?' worked':''}${isToday?' today':''}" title="${d}"></div>`;
+    html+=`<div class="cal-day${worked?' worked':''}${isToday?' today':''}">${d}</div>`;
   }
   el.innerHTML=html;
 }
@@ -1085,7 +1086,7 @@ function renderWorkoutScreen(){
 }
 
 function startWorkout(rName,exercises){
-  S.currentWorkout={name:rName||'My Workout',startTime:Date.now(),exercises:(exercises||[]).map(eid=>{const ex=getDB().find(e=>e.id===eid);return{id:eid,name:ex?.name||eid,sets:[{weight:'',reps:'',done:false}]};})};
+  S.currentWorkout={name:rName||'My Workout',startTime:Date.now(),exercises:(exercises||[]).map(eid=>{const ex=getDB().find(e=>e.id===eid);return{id:eid,name:ex?.name||eid,muscle:ex?.muscle||null,sets:[{weight:'',reps:'',done:false}]};})};
   wktStart=Date.now();
   if(wktInterval)clearInterval(wktInterval);
   wktInterval=setInterval(()=>{if(!wktStart)return;const s=Math.floor((Date.now()-wktStart)/1000);document.getElementById('wkt-timer').textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;},1000);
@@ -1388,20 +1389,22 @@ function renderProgress(){
 function renderAdvancedStats(){
   const wh=S.workoutHistory;
   const totalMin=wh.reduce((a,w)=>a+(w.duration||0),0);
-  const totalHrs=(totalMin/60).toFixed(1);
+  const totalHrs=totalMin>=60?(totalMin/60).toFixed(1)+' hrs':totalMin+' min';
   const now=new Date();
   const weekStart=new Date(now);weekStart.setDate(now.getDate()-now.getDay());weekStart.setHours(0,0,0,0);
   const thisWeek=wh.filter(w=>new Date(w.date)>=weekStart);
   const weekMin=thisWeek.reduce((a,w)=>a+(w.duration||0),0);
-  const avgDur=wh.length?(totalMin/wh.length).toFixed(0):0;
+  const weekHrs=weekMin>=60?(weekMin/60).toFixed(1)+' hrs':weekMin+' min';
+  const avgDur=wh.length?Math.round(totalMin/wh.length):0;
+  const avgDurStr=avgDur>=60?(avgDur/60).toFixed(1)+' hrs':avgDur+' min';
   const totalSets=wh.reduce((a,w)=>a+(w.totalSets||0),0);
   const bestStreak=calcBestStreak();
   const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
   const monthWorkouts=wh.filter(w=>new Date(w.date)>=monthStart).length;
   const stats=[
-    ['Total Training Time',`${totalHrs} hrs`],
-    ['This Week',`${(weekMin/60).toFixed(1)} hrs (${thisWeek.length} sessions)`],
-    ['Avg Session Length',`${avgDur} min`],
+    ['Total Training Time',totalHrs],
+    ['This Week',`${weekHrs} (${thisWeek.length} sessions)`],
+    ['Avg Session Length',avgDurStr],
     ['Total Sets Logged',totalSets.toLocaleString()],
     ['This Month',`${monthWorkouts} workouts`],
     ['Best Streak',`${bestStreak} days 🔥`],
@@ -1428,7 +1431,8 @@ function renderBodyMap(){
   const muscleCounts={};
   recentWorkouts.forEach(w=>w.exercises.forEach(ex=>{
     const dbEx=getDB().find(e=>e.id===ex.id);
-    if(dbEx?.muscle){muscleCounts[dbEx.muscle]=(muscleCounts[dbEx.muscle]||0)+1;}
+    const muscle=dbEx?.muscle||ex.muscle;
+    if(muscle){muscleCounts[muscle]=(muscleCounts[muscle]||0)+1;}
   }));
   const max=Math.max(...Object.values(muscleCounts),1);
   Object.entries(muscleCounts).forEach(([muscle,count])=>{
