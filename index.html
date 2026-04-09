@@ -4485,39 +4485,52 @@
 
     function removeFood(i) { const nd = getNutData(); nd.foods.splice(i, 1); scheduleSyncToCloud(); renderNutrition(); }
 
-    // ===== AI MEAL =====
+    // ===== AI MEAL (REAL + FALLBACK) =====
     let mealGoal = 'lose', mealDiet = 'any';
     function setMealGoal(g, btn) { mealGoal = g; document.querySelectorAll('[id^=meal-goal-]').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
     function setMealDiet(d, btn) { mealDiet = d; document.querySelectorAll('[id^=meal-diet-]').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
 
-    function generateAIMeal() {
+    async function generateAIMeal() {
       const el = document.getElementById('ai-meal-result');
       const btn = document.querySelector('#modal-ai-meal .btn-primary');
-      const cals = parseInt(document.getElementById('cal-target')?.textContent) || 2000;
-      btn.disabled = true;
-      el.innerHTML = '<div class="ai-generating"><div class="ai-pulse"></div><div>Crafting your meal plan...</div></div>';
+      const calTarget = parseInt(document.getElementById('cal-target')?.textContent) || 2000;
+      const proteinTarget = document.getElementById('m-protein')?.textContent || '150g';
 
-      setTimeout(() => {
-        const meals = {
-          lose: {
-            any: `🥣 Breakfast: Oatmeal with berries (300 kcal, 10g P)\n🥗 Lunch: Grilled chicken salad (400 kcal, 35g P)\n🍎 Snack: Apple & almonds (200 kcal, 6g P)\n🍲 Dinner: Baked salmon & veggies (500 kcal, 40g P)\nTotal: ~1400 kcal, 91g P`,
-            vegetarian: `🥣 Breakfast: Greek yogurt & granola (300 kcal, 20g P)\n🥗 Lunch: Lentil soup (350 kcal, 18g P)\n🍎 Snack: Cottage cheese (150 kcal, 25g P)\n🍲 Dinner: Tofu stir-fry (450 kcal, 30g P)\nTotal: ~1250 kcal, 93g P`,
-            'high-protein': `🥣 Breakfast: 3 eggs & spinach (300 kcal, 25g P)\n🥗 Lunch: Chicken breast & quinoa (450 kcal, 45g P)\n🍎 Snack: Protein shake (150 kcal, 25g P)\n🍲 Dinner: Lean steak & broccoli (500 kcal, 50g P)\nTotal: ~1400 kcal, 145g P`
-          },
-          maintain: {
-            any: `🥣 Breakfast: Avocado toast & eggs (450 kcal, 20g P)\n🥗 Lunch: Turkey wrap (550 kcal, 35g P)\n🍎 Snack: Greek yogurt & honey (200 kcal, 15g P)\n🍲 Dinner: Pasta with meat sauce (700 kcal, 30g P)\nTotal: ~1900 kcal, 100g P`,
-            vegetarian: `🥣 Breakfast: Smoothie bowl (400 kcal, 20g P)\n🥗 Lunch: Falafel bowl (600 kcal, 25g P)\n🍎 Snack: Hummus & veggies (200 kcal, 8g P)\n🍲 Dinner: Veggie lasagna (700 kcal, 30g P)\nTotal: ~1900 kcal, 83g P`,
-            'high-protein': `🥣 Breakfast: Protein pancakes (500 kcal, 40g P)\n🥗 Lunch: Double chicken bowl (700 kcal, 60g P)\n🍎 Snack: Beef jerky & nuts (250 kcal, 20g P)\n🍲 Dinner: Salmon & sweet potato (650 kcal, 45g P)\nTotal: ~2100 kcal, 165g P`
-          },
-          gain: {
-            any: `🥣 Breakfast: 4 eggs, oats, banana (600 kcal, 35g P)\n🥗 Lunch: Chicken rice bowl (800 kcal, 50g P)\n🍎 Snack: Mass gainer shake (500 kcal, 40g P)\n🍲 Dinner: Steak, potatoes, veggies (900 kcal, 60g P)\n🍪 Snack 2: PB&J sandwich (400 kcal, 15g P)\nTotal: ~3200 kcal, 200g P`,
-            vegetarian: `🥣 Breakfast: Tofu scramble & toast (600 kcal, 35g P)\n🥗 Lunch: Bean burrito bowl (800 kcal, 30g P)\n🍎 Snack: Protein bar & milk (500 kcal, 30g P)\n🍲 Dinner: Lentil pasta (900 kcal, 40g P)\n🍪 Snack 2: Greek yogurt & nuts (400 kcal, 25g P)\nTotal: ~3200 kcal, 160g P`,
-            'high-protein': `🥣 Breakfast: 6 egg whites, oats (600 kcal, 50g P)\n🥗 Lunch: 2 chicken breasts & rice (900 kcal, 80g P)\n🍎 Snack: Protein shake & banana (500 kcal, 50g P)\n🍲 Dinner: Lean beef & pasta (900 kcal, 60g P)\n🍪 Snack 2: Cottage cheese (200 kcal, 25g P)\nTotal: ~3100 kcal, 265g P`
-          }
-        };
-        el.innerHTML = `<div style="font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;max-height:300px;overflow-y:auto">${meals[mealGoal]?.[mealDiet] || meals.maintain.any}</div>`;
-        btn.disabled = false;
-      }, 800);
+      el.innerHTML = '<div class="ai-generating"><div class="ai-pulse"></div><div>Crafting your meal plan...</div></div>';
+      btn.disabled = true;
+
+      try {
+        const { data, error } = await sb.functions.invoke('ai-meal', {
+          body: { goal: mealGoal, diet: mealDiet, calories: calTarget, protein: proteinTarget }
+        });
+        if (error) throw error;
+        el.innerHTML = `<div style="font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;max-height:300px;overflow-y:auto">${data.mealPlan}</div>`;
+      } catch (e) {
+        generateAIMealMock(); // fallback to built‑in meals
+      }
+      btn.disabled = false;
+    }
+
+    function generateAIMealMock() {
+      const el = document.getElementById('ai-meal-result');
+      const meals = {
+        lose: {
+          any: `🥣 Breakfast: Oatmeal with berries (300 kcal, 10g P)\n🥗 Lunch: Grilled chicken salad (400 kcal, 35g P)\n🍎 Snack: Apple & almonds (200 kcal, 6g P)\n🍲 Dinner: Baked salmon & veggies (500 kcal, 40g P)\nTotal: ~1400 kcal, 91g P`,
+          vegetarian: `🥣 Breakfast: Greek yogurt & granola (300 kcal, 20g P)\n🥗 Lunch: Lentil soup (350 kcal, 18g P)\n🍎 Snack: Cottage cheese (150 kcal, 25g P)\n🍲 Dinner: Tofu stir-fry (450 kcal, 30g P)\nTotal: ~1250 kcal, 93g P`,
+          'high-protein': `🥣 Breakfast: 3 eggs & spinach (300 kcal, 25g P)\n🥗 Lunch: Chicken breast & quinoa (450 kcal, 45g P)\n🍎 Snack: Protein shake (150 kcal, 25g P)\n🍲 Dinner: Lean steak & broccoli (500 kcal, 50g P)\nTotal: ~1400 kcal, 145g P`
+        },
+        maintain: {
+          any: `🥣 Breakfast: Avocado toast & eggs (450 kcal, 20g P)\n🥗 Lunch: Turkey wrap (550 kcal, 35g P)\n🍎 Snack: Greek yogurt & honey (200 kcal, 15g P)\n🍲 Dinner: Pasta with meat sauce (700 kcal, 30g P)\nTotal: ~1900 kcal, 100g P`,
+          vegetarian: `🥣 Breakfast: Smoothie bowl (400 kcal, 20g P)\n🥗 Lunch: Falafel bowl (600 kcal, 25g P)\n🍎 Snack: Hummus & veggies (200 kcal, 8g P)\n🍲 Dinner: Veggie lasagna (700 kcal, 30g P)\nTotal: ~1900 kcal, 83g P`,
+          'high-protein': `🥣 Breakfast: Protein pancakes (500 kcal, 40g P)\n🥗 Lunch: Double chicken bowl (700 kcal, 60g P)\n🍎 Snack: Beef jerky & nuts (250 kcal, 20g P)\n🍲 Dinner: Salmon & sweet potato (650 kcal, 45g P)\nTotal: ~2100 kcal, 165g P`
+        },
+        gain: {
+          any: `🥣 Breakfast: 4 eggs, oats, banana (600 kcal, 35g P)\n🥗 Lunch: Chicken rice bowl (800 kcal, 50g P)\n🍎 Snack: Mass gainer shake (500 kcal, 40g P)\n🍲 Dinner: Steak, potatoes, veggies (900 kcal, 60g P)\n🍪 Snack 2: PB&J sandwich (400 kcal, 15g P)\nTotal: ~3200 kcal, 200g P`,
+          vegetarian: `🥣 Breakfast: Tofu scramble & toast (600 kcal, 35g P)\n🥗 Lunch: Bean burrito bowl (800 kcal, 30g P)\n🍎 Snack: Protein bar & milk (500 kcal, 30g P)\n🍲 Dinner: Lentil pasta (900 kcal, 40g P)\n🍪 Snack 2: Greek yogurt & nuts (400 kcal, 25g P)\nTotal: ~3200 kcal, 160g P`,
+          'high-protein': `🥣 Breakfast: 6 egg whites, oats (600 kcal, 50g P)\n🥗 Lunch: 2 chicken breasts & rice (900 kcal, 80g P)\n🍎 Snack: Protein shake & banana (500 kcal, 50g P)\n🍲 Dinner: Lean beef & pasta (900 kcal, 60g P)\n🍪 Snack 2: Cottage cheese (200 kcal, 25g P)\nTotal: ~3100 kcal, 265g P`
+        }
+      };
+      el.innerHTML = `<div style="font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;max-height:300px;overflow-y:auto">${meals[mealGoal]?.[mealDiet] || meals.maintain.any}</div>`;
     }
 
     // ===== CARDIO =====
