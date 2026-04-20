@@ -2959,7 +2959,7 @@
               <div style="width:10px;height:10px;border-radius:2px;background:#f0522a"></div><span id="cmp-legend-me"
                 style="font-size:10px;color:var(--muted)">You</span>
             </div>
-            <div style="display:flex;justify-content;gap:5px;display:flex;align-items:center;gap:5px">
+            <div style="display:flex;align-items:center;gap:5px">
               <div style="width:10px;height:10px;border-radius:2px;background:#3498db"></div><span id="cmp-legend-them"
                 style="font-size:10px;color:var(--muted)">Them</span>
             </div>
@@ -3242,6 +3242,9 @@
       { id: 'hamstring-stretch', name: 'Hamstring Stretch', cat: 'stretching', muscle: 'Legs', icon: '🦵', img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=120&h=120&fit=crop&crop=center', desc: 'Sit with legs extended. Reach toward toes. Hold 30-45 sec.', sets: 2 },
       { id: 'basketball', name: 'Basketball Drills', cat: 'sports', muscle: 'Legs', icon: '🏀', img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=120&h=120&fit=crop&crop=center', desc: 'Dribbling, footwork, agility ladders.', sets: 4 },
       { id: 'swimming', name: 'Swimming Laps', cat: 'sports', muscle: 'Back', icon: '🏊', img: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=120&h=120&fit=crop&crop=center', desc: 'Focus on stroke technique and breathing pattern.', sets: 4 },
+      { id: 'plank', name: 'Plank Hold', cat: 'calisthenics', muscle: 'Core', icon: '🧘', img: 'https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=120&h=120&fit=crop&crop=center', desc: 'Hold a straight body position on forearms and toes. Engage core throughout.', sets: 3 },
+      { id: 'russian-twist', name: 'Russian Twist', cat: 'calisthenics', muscle: 'Core', icon: '🔄', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=120&h=120&fit=crop&crop=center', desc: 'Seated with feet elevated, rotate torso side to side. Hold weight for extra resistance.', sets: 3 },
+      { id: 'leg-raise', name: 'Leg Raise', cat: 'calisthenics', muscle: 'Core', icon: '🦵', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=120&h=120&fit=crop&crop=center', desc: 'Lying flat, raise legs to 90 degrees. Lower slowly without touching the ground.', sets: 3 },
     ];
 
     const WORKOUT_TEMPLATES = [
@@ -4774,7 +4777,7 @@
     }
 
     // ===== PUSH NOTIFICATIONS =====
-    let vapidPublicKey = 'bc0398414fc7b1c4988cac6f6d05ad1a74a1b007c27905cbda025a869665c316'; // <-- REPLACE THIS!
+    let vapidPublicKey = 'bc0398414fc7b1c4988cac6f6d05ad1a74a1b007c27905cbda025a869665c316';
 
     async function requestNotificationPermission() {
       if (!('Notification' in window)) {
@@ -4791,8 +4794,8 @@
     }
 
     async function subscribeToPush() {
-      if (!vapidPublicKey || vapidPublicKey === 'bc0398414fc7b1c4988cac6f6d05ad1a74a1b007c27905cbda025a869665c316') {
-        console.warn('bc0398414fc7b1c4988cac6f6d05ad1a74a1b007c27905cbda025a869665c316');
+      if (!vapidPublicKey) {
+        console.warn('VAPID public key not configured');
         return;
       }
       const registration = await navigator.serviceWorker.ready;
