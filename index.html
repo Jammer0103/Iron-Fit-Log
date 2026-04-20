@@ -4774,7 +4774,7 @@
     }
 
     // ===== PUSH NOTIFICATIONS =====
-    let vapidPublicKey = 'BLKXpaXXkYfmXY0F5XXEHvSIrtWzHDctqWbxZPgfnpiMqqoyeGbSWRGiJgC7z8v2i34crbKy5lN8JxEjyb_b_iU'; // <-- REPLACE THIS!
+    let vapidPublicKey = 'bc0398414fc7b1c4988cac6f6d05ad1a74a1b007c27905cbda025a869665c316'; // <-- REPLACE THIS!
 
     async function requestNotificationPermission() {
       if (!('Notification' in window)) {
@@ -4791,8 +4791,8 @@
     }
 
     async function subscribeToPush() {
-      if (!vapidPublicKey || vapidPublicKey === 'BLKXpaXXkYfmXY0F5XXEHvSIrtWzHDctqWbxZPgfnpiMqqoyeGbSWRGiJgC7z8v2i34crbKy5lN8JxEjyb_b_iU') {
-        console.warn('BLKXpaXXkYfmXY0F5XXEHvSIrtWzHDctqWbxZPgfnpiMqqoyeGbSWRGiJgC7z8v2i34crbKy5lN8JxEjyb_b_iU');
+      if (!vapidPublicKey || vapidPublicKey === 'bc0398414fc7b1c4988cac6f6d05ad1a74a1b007c27905cbda025a869665c316') {
+        console.warn('bc0398414fc7b1c4988cac6f6d05ad1a74a1b007c27905cbda025a869665c316');
         return;
       }
       const registration = await navigator.serviceWorker.ready;
